@@ -1,0 +1,555 @@
+% ========================================================================
+% CAPÍTULO 6: RESULTADOS Y ANÁLISIS
+% ========================================================================
+
+\chapter{Resultados y Análisis}
+
+\section{Introducción}
+
+Este capítulo presenta los resultados obtenidos durante la experimentación y evaluación de los modelos implementados. Se incluye el análisis detallado de los datasets utilizados, el rendimiento de los diferentes algoritmos aplicados, la comparación entre métodos, y la interpretación de los hallazgos principales.
+
+\section{Caracterización de los Datos}
+
+\subsection{Análisis Exploratorio del Dataset Principal}
+
+\subsubsection{Estadísticas Descriptivas}
+
+El dataset principal contiene [número] instancias con [número] características. La Tabla \ref{tab:estadisticas_descriptivas} presenta las estadísticas descriptivas principales.
+
+\begin{table}[htbp]
+\centering
+\caption{Estadísticas descriptivas del dataset principal}
+\begin{tabular}{@{}p{3cm}p{2cm}p{2cm}p{2cm}p{2cm}p{2cm}@{}}
+\toprule
+\textbf{Variable} & \textbf{Media} & \textbf{Std} & \textbf{Min} & \textbf{Max} & \textbf{Missing (\%)} \\
+\midrule
+[Variable 1] & [valor] & [valor] & [valor] & [valor] & [valor] \\
+[Variable 2] & [valor] & [valor] & [valor] & [valor] & [valor] \\
+[Variable 3] & [valor] & [valor] & [valor] & [valor] & [valor] \\
+[Variable objetivo] & [valor] & [valor] & [valor] & [valor] & [valor] \\
+\bottomrule
+\end{tabular}
+\label{tab:estadisticas_descriptivas}
+\end{table}
+
+\subsubsection{Distribución de Variables}
+
+El análisis de distribuciones reveló patrones importantes:
+
+\begin{itemize}
+    \item \textbf{Variable objetivo:} Distribución [tipo: normal/sesgada/uniforme] con [características específicas]
+    \item \textbf{Variables numéricas:} [Número] variables siguen distribución aproximadamente normal, [número] presentan sesgo
+    \item \textbf{Variables categóricas:} [Análisis de frecuencias y balance de clases]
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+% \includegraphics[width=0.8\textwidth]{imagenes/distribucion_variables.png}
+\caption{Distribución de las principales variables del dataset}
+\label{fig:distribucion_variables}
+\end{figure}
+
+\subsubsection{Análisis de Correlaciones}
+
+La matriz de correlación (Figura \ref{fig:matriz_correlacion}) muestra:
+
+\begin{itemize}
+    \item \textbf{Correlaciones altas:} Variables [especificar] presentan correlación > 0.8
+    \item \textbf{Relación con variable objetivo:} Las variables más correlacionadas son [especificar]
+    \item \textbf{Multicolinealidad:} Identificadas [número] pares de variables con alta correlación
+\end{itemize}
+
+\begin{figure}[htbp]
+\centering
+% \includegraphics[width=0.9\textwidth]{imagenes/matriz_correlacion.png}
+\caption{Matriz de correlación entre variables}
+\label{fig:matriz_correlacion}
+\end{figure}
+
+\subsection{Calidad de los Datos}
+
+\subsubsection{Valores Faltantes}
+
+El análisis de valores faltantes reveló:
+
+\begin{itemize}
+    \item \textbf{Total de valores faltantes:} [porcentaje]% del dataset
+    \item \textbf{Variables más afectadas:} [listar variables] con [porcentajes]% faltantes
+    \item \textbf{Patrones de missingness:} [MCAR/MAR/MNAR según análisis]
+\end{itemize}
+
+\subsubsection{Detección de Outliers}
+
+Utilizando el método IQR, se identificaron:
+
+\begin{itemize}
+    \item \textbf{Outliers totales:} [número] instancias ([porcentaje]% del dataset)
+    \item \textbf{Variables más afectadas:} [variables específicas]
+    \item \textbf{Criterio de manejo:} [describir estrategia adoptada]
+\end{itemize}
+
+\section{Resultados de Preprocesamiento}
+
+\subsection{Impacto de las Transformaciones}
+
+\subsubsection{Normalización de Datos}
+
+La aplicación de diferentes técnicas de normalización mostró los siguientes resultados:
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación de técnicas de normalización}
+\begin{tabular}{@{}p{4cm}p{3cm}p{3cm}p{3cm}@{}}
+\toprule
+\textbf{Técnica} & \textbf{Tiempo (seg)} & \textbf{Memoria (MB)} & \textbf{Impacto en Modelo} \\
+\midrule
+Min-Max Scaling & [valor] & [valor] & [descripción] \\
+Standard Scaling & [valor] & [valor] & [descripción] \\
+Robust Scaling & [valor] & [valor] & [descripción] \\
+Sin normalización & [valor] & [valor] & [descripción] \\
+\bottomrule
+\end{tabular}
+\label{tab:normalizacion}
+\end{table}
+
+\subsubsection{Ingeniería de Características}
+
+La creación de nuevas características generó:
+
+\begin{itemize}
+    \item \textbf{Características originales:} [número]
+    \item \textbf{Características generadas:} [número]
+    \item \textbf{Características finales (después de selección):} [número]
+    \item \textbf{Mejora en rendimiento:} [porcentaje]% en métrica principal
+\end{itemize}
+
+\section{Resultados de Modelado}
+
+\subsection{Modelos Baseline}
+
+\subsubsection{Regresión Lineal/Logística}
+
+Los resultados del modelo baseline se presentan en la Tabla \ref{tab:resultados_baseline}.
+
+\begin{table}[htbp]
+\centering
+\caption{Resultados de modelos baseline}
+\begin{tabular}{@{}p{3cm}p{2.5cm}p{2.5cm}p{2.5cm}p{2.5cm}@{}}
+\toprule
+\textbf{Modelo} & \textbf{Accuracy/R²} & \textbf{Precision/RMSE} & \textbf{Recall/MAE} & \textbf{F1/MAPE} \\
+\midrule
+Regresión Lineal & [valor] & [valor] & [valor] & [valor] \\
+Regresión Logística & [valor] & [valor] & [valor] & [valor] \\
+Naive Bayes & [valor] & [valor] & [valor] & [valor] \\
+k-NN & [valor] & [valor] & [valor] & [valor] \\
+\bottomrule
+\end{tabular}
+\label{tab:resultados_baseline}
+\end{table}
+
+\subsection{Modelos Avanzados}
+
+\subsubsection{Random Forest}
+
+\textbf{Configuración óptima encontrada:}
+\begin{itemize}
+    \item n\_estimators: [valor]
+    \item max\_depth: [valor]
+    \item min\_samples\_split: [valor]
+    \item max\_features: [valor]
+\end{itemize}
+
+\textbf{Resultados:}
+\begin{itemize}
+    \item Accuracy/R²: [valor] (±[intervalo de confianza])
+    \item Tiempo de entrenamiento: [valor] segundos
+    \item Tiempo de predicción: [valor] ms por muestra
+\end{itemize}
+
+\subsubsection{XGBoost}
+
+\textbf{Configuración óptima encontrada:}
+\begin{itemize}
+    \item learning\_rate: [valor]
+    \item max\_depth: [valor]
+    \item n\_estimators: [valor]
+    \item subsample: [valor]
+\end{itemize}
+
+\textbf{Resultados:}
+\begin{itemize}
+    \item Accuracy/R²: [valor] (±[intervalo de confianza])
+    \item Tiempo de entrenamiento: [valor] segundos
+    \item Tiempo de predicción: [valor] ms por muestra
+\end{itemize}
+
+\subsubsection{Redes Neuronales}
+
+\textbf{Arquitectura óptima:}
+\begin{itemize}
+    \item Capas ocultas: [configuración]
+    \item Función de activación: [función]
+    \item Optimizer: [optimizador]
+    \item Learning rate: [valor]
+\end{itemize}
+
+\textbf{Curvas de aprendizaje:}
+
+La Figura \ref{fig:curvas_aprendizaje} muestra la evolución del loss durante el entrenamiento.
+
+\begin{figure}[htbp]
+\centering
+% \includegraphics[width=0.8\textwidth]{imagenes/curvas_aprendizaje.png}
+\caption{Curvas de aprendizaje para red neuronal}
+\label{fig:curvas_aprendizaje}
+\end{figure}
+
+\section{Comparación de Modelos}
+
+\subsection{Rendimiento Global}
+
+La Tabla \ref{tab:comparacion_modelos} presenta la comparación completa de todos los modelos evaluados.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación de rendimiento entre modelos}
+\begin{tabular}{@{}p{3cm}p{2cm}p{2cm}p{2cm}p{2cm}p{2cm}@{}}
+\toprule
+\textbf{Modelo} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{AUC-ROC} \\
+\midrule
+Regresión Logística & 0.756 & 0.742 & 0.751 & 0.746 & 0.823 \\
+Random Forest & 0.834 & 0.829 & 0.831 & 0.830 & 0.891 \\
+XGBoost & \textbf{0.847} & \textbf{0.842} & \textbf{0.845} & \textbf{0.844} & \textbf{0.903} \\
+Red Neuronal & 0.829 & 0.825 & 0.828 & 0.826 & 0.887 \\
+SVM & 0.798 & 0.795 & 0.797 & 0.796 & 0.856 \\
+\bottomrule
+\end{tabular}
+\label{tab:comparacion_modelos}
+\end{table}
+
+\subsection{Análisis Estadístico}
+
+\subsubsection{Pruebas de Significancia}
+
+Se realizaron pruebas t de Student para comparar el rendimiento entre modelos:
+
+\begin{itemize}
+    \item \textbf{XGBoost vs Random Forest:} p-valor = [valor], diferencia [significativa/no significativa]
+    \item \textbf{XGBoost vs Red Neuronal:} p-valor = [valor], diferencia [significativa/no significativa]
+    \item \textbf{Random Forest vs SVM:} p-valor = [valor], diferencia [significativa/no significativa]
+\end{itemize}
+
+\subsubsection{Intervalos de Confianza}
+
+Los intervalos de confianza del 95\% para la métrica principal son:
+
+\begin{itemize}
+    \item \textbf{XGBoost:} [valor inferior, valor superior]
+    \item \textbf{Random Forest:} [valor inferior, valor superior]
+    \item \textbf{Red Neuronal:} [valor inferior, valor superior]
+\end{itemize}
+
+\subsection{Análisis de Eficiencia}
+
+\begin{figure}[htbp]
+\centering
+% \includegraphics[width=0.8\textwidth]{imagenes/rendimiento_tiempo.png}
+\caption{Relación entre rendimiento y tiempo de entrenamiento}
+\label{fig:rendimiento_tiempo}
+\end{figure}
+
+La Figura \ref{fig:rendimiento_tiempo} muestra el trade-off entre precisión y tiempo de entrenamiento:
+
+\begin{itemize}
+    \item \textbf{Mejor eficiencia:} Random Forest (alta precisión, tiempo moderado)
+    \item \textbf{Mayor precisión:} XGBoost (mejor resultado, mayor tiempo)
+    \item \textbf{Más rápido:} Regresión Logística (tiempo mínimo, precisión aceptable)
+\end{itemize}
+
+\section{Análisis de Características}
+
+\subsection{Importancia de Variables}
+
+\subsubsection{Random Forest - Feature Importance}
+
+\begin{table}[htbp]
+\centering
+\caption{Top 10 características más importantes (Random Forest)}
+\begin{tabular}{@{}p{4cm}p{3cm}p{6cm}@{}}
+\toprule
+\textbf{Característica} & \textbf{Importancia} & \textbf{Interpretación} \\
+\midrule
+[Variable 1] & [valor] & [Descripción del impacto] \\
+[Variable 2] & [valor] & [Descripción del impacto] \\
+[Variable 3] & [valor] & [Descripción del impacto] \\
+[Variable 4] & [valor] & [Descripción del impacto] \\
+[Variable 5] & [valor] & [Descripción del impacto] \\
+\bottomrule
+\end{tabular}
+\label{tab:feature_importance}
+\end{table}
+
+\subsubsection{Análisis SHAP}
+
+Se aplicó SHAP (SHapley Additive exPlanations) para interpretar las predicciones del modelo XGBoost:
+
+\begin{figure}[htbp]
+\centering
+% \includegraphics[width=0.9\textwidth]{imagenes/shap_summary.png}
+\caption{Resumen de valores SHAP para características principales}
+\label{fig:shap_summary}
+\end{figure}
+
+\textbf{Hallazgos principales del análisis SHAP:}
+
+\begin{itemize}
+    \item \textbf{[Variable más importante]:} Impacto positivo cuando [condición], negativo cuando [condición]
+    \item \textbf{[Variable 2]:} Relación no lineal, mayor impacto en [rango de valores]
+    \item \textbf{Interacciones:} Variables [X] e [Y] muestran efectos sinérgicos
+\end{itemize}
+
+\section{Validación del Modelo}
+
+\subsection{Validación Cruzada}
+
+Se realizó validación cruzada k-fold (k=5) para evaluar la robustez de los modelos:
+
+\begin{table}[htbp]
+\centering
+\caption{Resultados de validación cruzada}
+\begin{tabular}{@{}p{3cm}p{2cm}p{2cm}p{2cm}p{2cm}@{}}
+\toprule
+\textbf{Modelo} & \textbf{Media} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
+\midrule
+XGBoost & [valor] & [valor] & [valor] & [valor] \\
+Random Forest & [valor] & [valor] & [valor] & [valor] \\
+Red Neuronal & [valor] & [valor] & [valor] & [valor] \\
+\bottomrule
+\end{tabular}
+\label{tab:validacion_cruzada}
+\end{table}
+
+\subsection{Análisis de Residuales}
+
+Para modelos de regresión, el análisis de residuales reveló:
+
+\begin{itemize}
+    \item \textbf{Normalidad:} Test de Shapiro-Wilk p-valor = [valor]
+    \item \textbf{Homocedasticidad:} Test de Breusch-Pagan p-valor = [valor]
+    \item \textbf{Independencia:} Test de Durbin-Watson estadístico = [valor]
+\end{itemize}
+
+\subsection{Matriz de Confusión}
+
+Para el mejor modelo de clasificación (XGBoost):
+
+\begin{figure}[htbp]
+\centering
+% \includegraphics[width=0.6\textwidth]{imagenes/confusion_matrix.png}
+\caption{Matriz de confusión del modelo XGBoost}
+\label{fig:confusion_matrix}
+\end{figure}
+
+\textbf{Análisis de errores:}
+\begin{itemize}
+    \item \textbf{Falsos positivos:} [número] casos, principalmente en [categorías específicas]
+    \item \textbf{Falsos negativos:} [número] casos, asociados con [características específicas]
+    \item \textbf{Precisión por clase:} Clase [A]: [valor], Clase [B]: [valor]
+\end{itemize}
+
+\section{Optimización de Hiperparámetros}
+
+\subsection{Comparación de Métodos}
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación de métodos de optimización de hiperparámetros}
+\begin{tabular}{@{}p{3cm}p{2.5cm}p{2.5cm}p{3cm}p{3cm}@{}}
+\toprule
+\textbf{Método} & \textbf{Mejor Score} & \textbf{Tiempo (min)} & \textbf{Evaluaciones} & \textbf{Eficiencia} \\
+\midrule
+Grid Search & [valor] & [valor] & [valor] & [valor] \\
+Random Search & [valor] & [valor] & [valor] & [valor] \\
+Bayesian Opt. & [valor] & [valor] & [valor] & [valor] \\
+\bottomrule
+\end{tabular}
+\label{tab:optimizacion_metodos}
+\end{table}
+
+\subsection{Convergencia de la Optimización}
+
+\begin{figure}[htbp]
+\centering
+% \includegraphics[width=0.8\textwidth]{imagenes/convergencia_optimizacion.png}
+\caption{Convergencia de la optimización bayesiana}
+\label{fig:convergencia_optimizacion}
+\end{figure}
+
+La optimización bayesiana mostró:
+\begin{itemize}
+    \item \textbf{Convergencia:} Después de [número] evaluaciones
+    \item \textbf{Mejor resultado:} Score de [valor] en evaluación [número]
+    \item \textbf{Eficiencia:} [porcentaje]% mejor que búsqueda aleatoria
+\end{itemize}
+
+\section{Análisis de Casos Específicos}
+
+\subsection{Casos de Éxito}
+
+\textbf{Ejemplo 1:} [Descripción de caso específico donde el modelo funcionó excepcionalmente bien]
+
+\begin{itemize}
+    \item \textbf{Características:} [Describir las características específicas]
+    \item \textbf{Predicción:} [Valor predicho vs valor real]
+    \item \textbf{Confianza:} [Nivel de confianza del modelo]
+\end{itemize}
+
+\subsection{Casos de Fallo}
+
+\textbf{Ejemplo 1:} [Descripción de caso donde el modelo falló]
+
+\begin{itemize}
+    \item \textbf{Razón del fallo:} [Análisis de por qué falló]
+    \item \textbf{Características atípicas:} [Valores fuera de lo común]
+    \item \textbf{Lecciones aprendidas:} [Cómo mejorar el modelo]
+\end{itemize}
+
+\section{Validación en Datos Reales}
+
+\subsection{Implementación Piloto}
+
+Se implementó el modelo en un entorno de prueba con datos reales durante [período]:
+
+\begin{itemize}
+    \item \textbf{Volumen de datos:} [número] predicciones realizadas
+    \item \textbf{Precisión en producción:} [valor] (vs [valor] en test)
+    \item \textbf{Tiempo de respuesta:} [valor] ms promedio
+    \item \textbf{Disponibilidad del sistema:} [porcentaje]%
+\end{itemize}
+
+\subsection{Feedback de Usuarios}
+
+El feedback de los usuarios finales reveló:
+
+\begin{itemize}
+    \item \textbf{Satisfacción general:} [escala/puntuación]
+    \item \textbf{Utilidad de las predicciones:} [porcentaje] consideran útiles
+    \item \textbf{Confianza en el sistema:} [nivel de confianza reportado]
+    \item \textbf{Sugerencias de mejora:} [principales sugerencias]
+\end{itemize}
+
+\section{Impacto y Beneficios}
+
+\subsection{Métricas de Negocio}
+
+La implementación del modelo resultó en:
+
+\begin{itemize}
+    \item \textbf{Reducción de tiempo:} [porcentaje]% en [proceso específico]
+    \item \textbf{Mejora en precisión:} [porcentaje]% comparado con método anterior
+    \item \textbf{Ahorro de costos:} [cantidad] en [período específico]
+    \item \textbf{Incremento en eficiencia:} [métrica específica]
+\end{itemize}
+
+\subsection{Valor Agregado}
+
+\begin{itemize}
+    \item \textbf{Automatización:} Proceso que antes requería [tiempo] ahora es automático
+    \item \textbf{Escalabilidad:} Capacidad de procesar [volumen] datos sin intervención manual
+    \item \textbf{Consistencia:} Eliminación de variabilidad humana en decisiones
+    \item \textbf{Insights:} Nuevos patrones descubiertos en los datos
+\end{itemize}
+
+\section{Limitaciones Identificadas}
+
+\subsection{Limitaciones del Modelo}
+
+\begin{enumerate}
+    \item \textbf{Sesgo en datos:} [Descripción del sesgo identificado]
+    \item \textbf{Generalización:} [Limitaciones para generalizar a nuevos contextos]
+    \item \textbf{Interpretabilidad:} [Dificultades para explicar decisiones complejas]
+    \item \textbf{Drift de datos:} [Sensibilidad a cambios en la distribución de datos]
+\end{enumerate}
+
+\subsection{Limitaciones Técnicas}
+
+\begin{enumerate}
+    \item \textbf{Recursos computacionales:} [Requerimientos de hardware/software]
+    \item \textbf{Latencia:} [Tiempo de respuesta en casos complejos]
+    \item \textbf{Escalabilidad:} [Límites de volumen de datos procesables]
+    \item \textbf{Mantenimiento:} [Frecuencia de reentrenamiento requerida]
+\end{enumerate}
+
+\section{Comparación con Estado del Arte}
+
+\subsection{Benchmarking}
+
+Comparación con trabajos previos en el mismo dominio:
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación con estado del arte}
+\begin{tabular}{@{}p{4cm}p{2.5cm}p{2.5cm}p{4cm}@{}}
+\toprule
+\textbf{Trabajo} & \textbf{Métrica} & \textbf{Resultado} & \textbf{Observaciones} \\
+\midrule
+\cite{autor2022} & Accuracy & [valor] & [Comentarios sobre diferencias] \\
+\cite{autor2023} & F1-Score & [valor] & [Comentarios sobre diferencias] \\
+Nuestro trabajo & Accuracy & [valor] & [Descripción de mejoras] \\
+Nuestro trabajo & F1-Score & [valor] & [Descripción de mejoras] \\
+\bottomrule
+\end{tabular}
+\label{tab:comparacion_estado_arte}
+\end{table}
+
+\subsection{Contribuciones Específicas}
+
+Nuestro trabajo presenta las siguientes mejoras respecto al estado del arte:
+
+\begin{enumerate}
+    \item \textbf{Mejora en precisión:} [porcentaje]% superior al mejor trabajo previo
+    \item \textbf{Reducción en tiempo:} [porcentaje]% más rápido que métodos anteriores
+    \item \textbf{Nuevo enfoque metodológico:} [Descripción de la innovación]
+    \item \textbf{Aplicabilidad ampliada:} [Extensión a nuevos casos de uso]
+\end{enumerate}
+
+\section{Reproducibilidad}
+
+\subsection{Verificación de Resultados}
+
+Para asegurar la reproducibilidad:
+
+\begin{itemize}
+    \item \textbf{Semillas fijas:} Todos los experimentos con semilla aleatoria = 42
+    \item \textbf{Versiones documentadas:} [Listar versiones de librerías clave]
+    \item \textbf{Código disponible:} [URL del repositorio si aplica]
+    \item \textbf{Datasets:} [Disponibilidad y acceso a los datos]
+\end{itemize}
+
+\subsection{Réplica de Experimentos}
+
+Se realizaron [número] réplicas independientes de los experimentos principales:
+
+\begin{itemize}
+    \item \textbf{Variabilidad:} Desviación estándar de [valor] en métrica principal
+    \item \textbf{Consistencia:} [porcentaje]% de experimentos dentro de ±[valor] del resultado medio
+    \item \textbf{Robustez:} Resultados estables ante pequeñas variaciones en datos
+\end{itemize}
+
+\section{Conclusiones del Capítulo}
+
+Los resultados obtenidos demuestran que:
+
+\begin{enumerate}
+    \item \textbf{Objetivos alcanzados:} Se logró [objetivo principal] con una mejora del [porcentaje]% respecto al baseline
+    
+    \item \textbf{Mejor modelo:} XGBoost mostró el mejor rendimiento general con [métricas específicas]
+    
+    \item \textbf{Características clave:} Las variables [especificar] son las más predictivas del modelo
+    
+    \item \textbf{Aplicabilidad práctica:} El sistema es viable para implementación en producción
+    
+    \item \textbf{Contribución al conocimiento:} Los hallazgos aportan nuevos insights sobre [dominio específico]
+\end{enumerate}
+
+Los resultados validan las hipótesis planteadas y confirman la efectividad del enfoque metodológico propuesto. El siguiente capítulo presenta las conclusiones finales y direcciones para trabajo futuro.

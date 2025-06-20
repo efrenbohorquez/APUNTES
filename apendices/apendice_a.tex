@@ -1,0 +1,837 @@
+% ========================================================================
+% APÉNDICE A: CÓDIGO FUENTE PRINCIPAL
+% ========================================================================
+
+\chapter{Código Fuente Principal}
+\label{apendice:codigo}
+
+\section{Introducción}
+
+Este apéndice contiene el código fuente principal desarrollado durante la investigación. Se incluyen los módulos más importantes del sistema implementado, organizados por funcionalidad.
+
+\section{Módulo de Preprocesamiento de Datos}
+
+\subsection{Clase Principal de Preprocesamiento}
+
+\begin{lstlisting}[language=Python, caption=Módulo principal de preprocesamiento]
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
+import logging
+
+class DataPreprocessor:
+    """
+    Clase principal para preprocesamiento de datos
+    Maneja limpieza, transformación y división de datos
+    """
+    
+    def __init__(self, config=None):
+        self.config = config or {}
+        self.scalers = {}
+        self.encoders = {}
+        self.imputers = {}
+        self.feature_names = []
+        self.logger = logging.getLogger(__name__)
+        
+    def load_data(self, file_path):
+        """Carga datos desde archivo CSV"""
+        try:
+            data = pd.read_csv(file_path)
+            self.logger.info(f"Datos cargados: {data.shape}")
+            return data
+        except Exception as e:
+            self.logger.error(f"Error cargando datos: {e}")
+            raise
+    
+    def clean_data(self, df):
+        """Limpieza básica de datos"""
+        initial_shape = df.shape
+        
+        # Eliminar duplicados
+        df = df.drop_duplicates()
+        
+        # Eliminar columnas con >90% valores faltantes
+        threshold = 0.9
+        df = df.dropna(thresh=int(threshold * len(df)), axis=1)
+        
+        final_shape = df.shape
+        self.logger.info(f"Limpieza completada: {initial_shape} -> {final_shape}")
+        
+        return df
+    
+    def handle_missing_values(self, df, strategy='mean'):
+        """Manejo de valores faltantes"""
+        numeric_columns = df.select_dtypes(include=[np.number]).columns
+        categorical_columns = df.select_dtypes(include=['object']).columns
+        
+        # Imputar valores numéricos
+        if len(numeric_columns) > 0:
+            if 'numeric_imputer' not in self.imputers:
+                self.imputers['numeric_imputer'] = SimpleImputer(strategy=strategy)
+                df[numeric_columns] = self.imputers['numeric_imputer'].fit_transform(
+                    df[numeric_columns]
+                )
+            else:
+                df[numeric_columns] = self.imputers['numeric_imputer'].transform(
+                    df[numeric_columns]
+                )
+        
+        # Imputar valores categóricos
+        if len(categorical_columns) > 0:
+            if 'categorical_imputer' not in self.imputers:
+                self.imputers['categorical_imputer'] = SimpleImputer(
+                    strategy='most_frequent'
+                )
+                df[categorical_columns] = self.imputers['categorical_imputer'].fit_transform(
+                    df[categorical_columns]
+                )
+            else:
+                df[categorical_columns] = self.imputers['categorical_imputer'].transform(
+                    df[categorical_columns]
+                )
+        
+        return df
+    
+    def encode_categorical_variables(self, df, target_column=None):
+        """Codificación de variables categóricas"""
+        categorical_columns = df.select_dtypes(include=['object']).columns
+        
+        for col in categorical_columns:
+            if col != target_column:
+                if col not in self.encoders:
+                    self.encoders[col] = LabelEncoder()
+                    df[col] = self.encoders[col].fit_transform(df[col].astype(str))
+                else:
+                    df[col] = self.encoders[col].transform(df[col].astype(str))
+        
+        return df
+    
+    def scale_features(self, df, target_column=None):
+        """Escalamiento de características"""
+        numeric_columns = df.select_dtypes(include=[np.number]).columns
+        
+        if target_column in numeric_columns:
+            numeric_columns = numeric_columns.drop(target_column)
+        
+        if len(numeric_columns) > 0:
+            if 'feature_scaler' not in self.scalers:
+                self.scalers['feature_scaler'] = StandardScaler()
+                df[numeric_columns] = self.scalers['feature_scaler'].fit_transform(
+                    df[numeric_columns]
+                )
+            else:
+                df[numeric_columns] = self.scalers['feature_scaler'].transform(
+                    df[numeric_columns]
+                )
+        
+        return df
+    
+    def split_data(self, df, target_column, test_size=0.2, random_state=42):
+        """División de datos en entrenamiento y prueba"""
+        X = df.drop(columns=[target_column])
+        y = df[target_column]
+        
+        self.feature_names = list(X.columns)
+        
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=test_size, random_state=random_state, stratify=y
+        )
+        
+        return X_train, X_test, y_train, y_test
+    
+    def fit_transform(self, df, target_column):
+        """Pipeline completo de preprocesamiento"""
+        self.logger.info("Iniciando preprocesamiento completo...")
+        
+        # Limpieza
+        df = self.clean_data(df)
+        
+        # Manejo de valores faltantes
+        df = self.handle_missing_values(df)
+        
+        # Codificación categórica
+        df = self.encode_categorical_variables(df, target_column)
+        
+        # Escalamiento
+        df = self.scale_features(df, target_column)
+        
+        self.logger.info("Preprocesamiento completado")
+        return df
+    
+    def transform(self, df):
+        """Transforma nuevos datos usando transformadores ajustados"""
+        df = self.handle_missing_values(df)
+        df = self.encode_categorical_variables(df)
+        df = self.scale_features(df)
+        return df
+\end{lstlisting}
+
+\section{Módulo de Entrenamiento de Modelos}
+
+\subsection{Entrenador de Modelos}
+
+\begin{lstlisting}[language=Python, caption=Módulo de entrenamiento de modelos]
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+import xgboost as xgb
+from sklearn.metrics import classification_report, accuracy_score
+import joblib
+import json
+import time
+
+class ModelTrainer:
+    """
+    Clase para entrenamiento y evaluación de múltiples modelos
+    """
+    
+    def __init__(self):
+        self.models = {}
+        self.results = {}
+        self.best_model = None
+        self.best_score = 0
+    
+    def initialize_models(self):
+        """Inicializa los modelos con configuraciones por defecto"""
+        self.models = {
+            'logistic_regression': LogisticRegression(random_state=42, max_iter=1000),
+            'random_forest': RandomForestClassifier(
+                n_estimators=100, random_state=42, n_jobs=-1
+            ),
+            'svm': SVC(random_state=42, probability=True),
+            'xgboost': xgb.XGBClassifier(random_state=42, eval_metric='logloss')
+        }
+    
+    def train_model(self, model_name, X_train, y_train, X_val=None, y_val=None):
+        """Entrena un modelo específico"""
+        if model_name not in self.models:
+            raise ValueError(f"Modelo {model_name} no encontrado")
+        
+        model = self.models[model_name]
+        
+        print(f"Entrenando {model_name}...")
+        start_time = time.time()
+        
+        # Entrenar modelo
+        if model_name == 'xgboost' and X_val is not None:
+            model.fit(
+                X_train, y_train,
+                eval_set=[(X_val, y_val)],
+                early_stopping_rounds=10,
+                verbose=False
+            )
+        else:
+            model.fit(X_train, y_train)
+        
+        training_time = time.time() - start_time
+        
+        # Evaluar en conjunto de entrenamiento
+        train_pred = model.predict(X_train)
+        train_accuracy = accuracy_score(y_train, train_pred)
+        
+        results = {
+            'model': model,
+            'train_accuracy': train_accuracy,
+            'training_time': training_time
+        }
+        
+        # Evaluar en conjunto de validación si está disponible
+        if X_val is not None and y_val is not None:
+            val_pred = model.predict(X_val)
+            val_accuracy = accuracy_score(y_val, val_pred)
+            results['val_accuracy'] = val_accuracy
+            
+            print(f"{model_name} - Train Acc: {train_accuracy:.4f}, Val Acc: {val_accuracy:.4f}")
+            
+            # Actualizar mejor modelo
+            if val_accuracy > self.best_score:
+                self.best_score = val_accuracy
+                self.best_model = model_name
+        else:
+            print(f"{model_name} - Train Acc: {train_accuracy:.4f}")
+        
+        self.results[model_name] = results
+        return results
+    
+    def train_all_models(self, X_train, y_train, X_val=None, y_val=None):
+        """Entrena todos los modelos inicializados"""
+        self.initialize_models()
+        
+        for model_name in self.models.keys():
+            self.train_model(model_name, X_train, y_train, X_val, y_val)
+        
+        print(f"\\nMejor modelo: {self.best_model} con accuracy: {self.best_score:.4f}")
+        return self.results
+    
+    def evaluate_model(self, model_name, X_test, y_test):
+        """Evalúa un modelo en el conjunto de prueba"""
+        if model_name not in self.results:
+            raise ValueError(f"Modelo {model_name} no ha sido entrenado")
+        
+        model = self.results[model_name]['model']
+        
+        # Predicciones
+        y_pred = model.predict(X_test)
+        y_proba = model.predict_proba(X_test) if hasattr(model, 'predict_proba') else None
+        
+        # Métricas
+        accuracy = accuracy_score(y_test, y_pred)
+        report = classification_report(y_test, y_pred, output_dict=True)
+        
+        evaluation_results = {
+            'accuracy': accuracy,
+            'classification_report': report,
+            'predictions': y_pred,
+            'probabilities': y_proba
+        }
+        
+        print(f"\\n{model_name} - Test Accuracy: {accuracy:.4f}")
+        print(classification_report(y_test, y_pred))
+        
+        return evaluation_results
+    
+    def save_model(self, model_name, filepath):
+        """Guarda un modelo entrenado"""
+        if model_name not in self.results:
+            raise ValueError(f"Modelo {model_name} no encontrado")
+        
+        model_data = {
+            'model': self.results[model_name]['model'],
+            'training_info': {
+                'train_accuracy': self.results[model_name]['train_accuracy'],
+                'training_time': self.results[model_name]['training_time']
+            }
+        }
+        
+        joblib.dump(model_data, filepath)
+        print(f"Modelo {model_name} guardado en {filepath}")
+    
+    def load_model(self, filepath):
+        """Carga un modelo previamente guardado"""
+        model_data = joblib.load(filepath)
+        return model_data['model']
+    
+    def get_feature_importance(self, model_name, feature_names):
+        """Obtiene la importancia de características"""
+        if model_name not in self.results:
+            raise ValueError(f"Modelo {model_name} no encontrado")
+        
+        model = self.results[model_name]['model']
+        
+        if hasattr(model, 'feature_importances_'):
+            importance_df = pd.DataFrame({
+                'feature': feature_names,
+                'importance': model.feature_importances_
+            }).sort_values('importance', ascending=False)
+            
+            return importance_df
+        else:
+            print(f"Modelo {model_name} no proporciona importancia de características")
+            return None
+\end{lstlisting}
+
+\section{Módulo de Evaluación}
+
+\subsection{Evaluador de Modelos}
+
+\begin{lstlisting}[language=Python, caption=Módulo de evaluación de modelos]
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix, roc_curve, auc
+from sklearn.model_selection import cross_val_score
+import pandas as pd
+import numpy as np
+
+class ModelEvaluator:
+    """
+    Clase para evaluación comprehensiva de modelos
+    """
+    
+    def __init__(self, task_type='classification'):
+        self.task_type = task_type
+        self.evaluation_results = {}
+    
+    def plot_confusion_matrix(self, y_true, y_pred, model_name, normalize=False):
+        """Genera matriz de confusión"""
+        cm = confusion_matrix(y_true, y_pred)
+        
+        if normalize:
+            cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+            fmt = '.2f'
+        else:
+            fmt = 'd'
+        
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(cm, annot=True, fmt=fmt, cmap='Blues')
+        plt.title(f'Matriz de Confusión - {model_name}')
+        plt.xlabel('Predicción')
+        plt.ylabel('Valor Real')
+        plt.show()
+        
+        return cm
+    
+    def plot_roc_curve(self, y_true, y_proba, model_name):
+        """Genera curva ROC"""
+        fpr, tpr, _ = roc_curve(y_true, y_proba[:, 1])
+        roc_auc = auc(fpr, tpr)
+        
+        plt.figure(figsize=(8, 6))
+        plt.plot(fpr, tpr, color='darkorange', lw=2, 
+                label=f'ROC Curve (AUC = {roc_auc:.2f})')
+        plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.05])
+        plt.xlabel('Tasa de Falsos Positivos')
+        plt.ylabel('Tasa de Verdaderos Positivos')
+        plt.title(f'Curva ROC - {model_name}')
+        plt.legend(loc="lower right")
+        plt.show()
+        
+        return roc_auc
+    
+    def cross_validate_model(self, model, X, y, cv=5):
+        """Validación cruzada"""
+        scores = cross_val_score(model, X, y, cv=cv, scoring='accuracy')
+        
+        results = {
+            'scores': scores,
+            'mean_score': scores.mean(),
+            'std_score': scores.std(),
+            'confidence_interval': (
+                scores.mean() - 2 * scores.std(),
+                scores.mean() + 2 * scores.std()
+            )
+        }
+        
+        print(f"Validación Cruzada ({cv}-fold):")
+        print(f"Accuracy: {results['mean_score']:.4f} (+/- {results['std_score'] * 2:.4f})")
+        print(f"IC 95%: [{results['confidence_interval'][0]:.4f}, {results['confidence_interval'][1]:.4f}]")
+        
+        return results
+    
+    def compare_models(self, results_dict):
+        """Compara múltiples modelos"""
+        comparison_data = []
+        
+        for model_name, results in results_dict.items():
+            comparison_data.append({
+                'Modelo': model_name,
+                'Accuracy': results.get('accuracy', 0),
+                'Precision': results.get('classification_report', {}).get('weighted avg', {}).get('precision', 0),
+                'Recall': results.get('classification_report', {}).get('weighted avg', {}).get('recall', 0),
+                'F1-Score': results.get('classification_report', {}).get('weighted avg', {}).get('f1-score', 0)
+            })
+        
+        comparison_df = pd.DataFrame(comparison_data)
+        comparison_df = comparison_df.sort_values('Accuracy', ascending=False)
+        
+        # Visualización
+        fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+        metrics = ['Accuracy', 'Precision', 'Recall', 'F1-Score']
+        
+        for i, metric in enumerate(metrics):
+            row, col = i // 2, i % 2
+            axes[row, col].bar(comparison_df['Modelo'], comparison_df[metric])
+            axes[row, col].set_title(f'Comparación - {metric}')
+            axes[row, col].set_ylabel(metric)
+            axes[row, col].tick_params(axis='x', rotation=45)
+            
+            # Añadir valores sobre las barras
+            for j, v in enumerate(comparison_df[metric]):
+                axes[row, col].text(j, v + 0.01, f'{v:.3f}', ha='center')
+        
+        plt.tight_layout()
+        plt.show()
+        
+        return comparison_df
+    
+    def feature_importance_plot(self, importance_df, top_n=10):
+        """Visualiza importancia de características"""
+        top_features = importance_df.head(top_n)
+        
+        plt.figure(figsize=(10, 6))
+        sns.barplot(data=top_features, x='importance', y='feature')
+        plt.title(f'Top {top_n} Características Más Importantes')
+        plt.xlabel('Importancia')
+        plt.ylabel('Característica')
+        plt.show()
+        
+        return top_features
+    
+    def learning_curve_plot(self, model, X, y, train_sizes=None):
+        """Genera curvas de aprendizaje"""
+        from sklearn.model_selection import learning_curve
+        
+        if train_sizes is None:
+            train_sizes = np.linspace(0.1, 1.0, 10)
+        
+        train_sizes, train_scores, val_scores = learning_curve(
+            model, X, y, train_sizes=train_sizes, cv=5, 
+            scoring='accuracy', n_jobs=-1
+        )
+        
+        train_mean = np.mean(train_scores, axis=1)
+        train_std = np.std(train_scores, axis=1)
+        val_mean = np.mean(val_scores, axis=1)
+        val_std = np.std(val_scores, axis=1)
+        
+        plt.figure(figsize=(10, 6))
+        plt.plot(train_sizes, train_mean, 'o-', color='blue', label='Entrenamiento')
+        plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, 
+                        alpha=0.1, color='blue')
+        
+        plt.plot(train_sizes, val_mean, 'o-', color='red', label='Validación')
+        plt.fill_between(train_sizes, val_mean - val_std, val_mean + val_std, 
+                        alpha=0.1, color='red')
+        
+        plt.xlabel('Tamaño del Conjunto de Entrenamiento')
+        plt.ylabel('Accuracy')
+        plt.title('Curvas de Aprendizaje')
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+        
+        return train_sizes, train_scores, val_scores
+\end{lstlisting}
+
+\section{Script Principal de Ejecución}
+
+\subsection{Pipeline Completo}
+
+\begin{lstlisting}[language=Python, caption=Script principal de ejecución]
+#!/usr/bin/env python3
+"""
+Script principal para ejecutar el pipeline completo de análisis
+"""
+
+import pandas as pd
+import numpy as np
+import logging
+from pathlib import Path
+import argparse
+import yaml
+
+# Imports locales
+from src.preprocessing import DataPreprocessor
+from src.training import ModelTrainer
+from src.evaluation import ModelEvaluator
+
+def setup_logging(log_level='INFO'):
+    """Configura el sistema de logging"""
+    logging.basicConfig(
+        level=getattr(logging, log_level),
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler('experiment.log'),
+            logging.StreamHandler()
+        ]
+    )
+
+def load_config(config_path):
+    """Carga configuración desde archivo YAML"""
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
+
+def main():
+    """Función principal del pipeline"""
+    parser = argparse.ArgumentParser(description='Pipeline de Analítica de Datos')
+    parser.add_argument('--config', type=str, default='config.yaml',
+                       help='Archivo de configuración')
+    parser.add_argument('--data', type=str, required=True,
+                       help='Archivo de datos CSV')
+    parser.add_argument('--target', type=str, required=True,
+                       help='Columna objetivo')
+    parser.add_argument('--output', type=str, default='results/',
+                       help='Directorio de salida')
+    
+    args = parser.parse_args()
+    
+    # Configurar logging
+    setup_logging()
+    logger = logging.getLogger(__name__)
+    
+    try:
+        # Cargar configuración
+        config = load_config(args.config)
+        logger.info(f"Configuración cargada desde {args.config}")
+        
+        # Crear directorio de salida
+        output_dir = Path(args.output)
+        output_dir.mkdir(exist_ok=True)
+        
+        # 1. PREPROCESAMIENTO
+        logger.info("=== FASE 1: PREPROCESAMIENTO ===")
+        preprocessor = DataPreprocessor(config.get('preprocessing', {}))
+        
+        # Cargar datos
+        df = preprocessor.load_data(args.data)
+        logger.info(f"Dataset cargado: {df.shape}")
+        
+        # Procesar datos
+        df_processed = preprocessor.fit_transform(df, args.target)
+        
+        # Dividir datos
+        X_train, X_test, y_train, y_test = preprocessor.split_data(
+            df_processed, args.target, 
+            test_size=config.get('test_size', 0.2)
+        )
+        
+        # Dividir entrenamiento en train/validation
+        from sklearn.model_selection import train_test_split
+        X_train, X_val, y_train, y_val = train_test_split(
+            X_train, y_train, test_size=0.2, random_state=42
+        )
+        
+        logger.info(f"Datos divididos - Train: {X_train.shape}, Val: {X_val.shape}, Test: {X_test.shape}")
+        
+        # 2. ENTRENAMIENTO
+        logger.info("=== FASE 2: ENTRENAMIENTO ===")
+        trainer = ModelTrainer()
+        
+        # Entrenar todos los modelos
+        training_results = trainer.train_all_models(X_train, y_train, X_val, y_val)
+        
+        # Guardar el mejor modelo
+        best_model_path = output_dir / f'best_model_{trainer.best_model}.pkl'
+        trainer.save_model(trainer.best_model, best_model_path)
+        logger.info(f"Mejor modelo guardado: {best_model_path}")
+        
+        # 3. EVALUACIÓN
+        logger.info("=== FASE 3: EVALUACIÓN ===")
+        evaluator = ModelEvaluator()
+        
+        evaluation_results = {}
+        for model_name in training_results.keys():
+            eval_result = trainer.evaluate_model(model_name, X_test, y_test)
+            evaluation_results[model_name] = eval_result
+            
+            # Validación cruzada
+            cv_results = evaluator.cross_validate_model(
+                training_results[model_name]['model'], X_train, y_train
+            )
+            eval_result['cross_validation'] = cv_results
+        
+        # Comparar modelos
+        logger.info("=== COMPARACIÓN DE MODELOS ===")
+        comparison_df = evaluator.compare_models(evaluation_results)
+        
+        # Guardar resultados
+        comparison_path = output_dir / 'model_comparison.csv'
+        comparison_df.to_csv(comparison_path, index=False)
+        logger.info(f"Comparación guardada: {comparison_path}")
+        
+        # Análisis de importancia de características
+        if trainer.best_model in ['random_forest', 'xgboost']:
+            importance_df = trainer.get_feature_importance(
+                trainer.best_model, preprocessor.feature_names
+            )
+            
+            if importance_df is not None:
+                importance_path = output_dir / 'feature_importance.csv'
+                importance_df.to_csv(importance_path, index=False)
+                logger.info(f"Importancia de características guardada: {importance_path}")
+                
+                # Visualizar top características
+                evaluator.feature_importance_plot(importance_df)
+        
+        # 4. RESULTADOS FINALES
+        logger.info("=== RESULTADOS FINALES ===")
+        best_accuracy = evaluation_results[trainer.best_model]['accuracy']
+        logger.info(f"Mejor modelo: {trainer.best_model}")
+        logger.info(f"Accuracy en test: {best_accuracy:.4f}")
+        
+        # Generar reporte final
+        report = {
+            'best_model': trainer.best_model,
+            'test_accuracy': best_accuracy,
+            'model_comparison': comparison_df.to_dict('records'),
+            'dataset_info': {
+                'total_samples': len(df),
+                'features': len(preprocessor.feature_names),
+                'train_samples': len(X_train),
+                'test_samples': len(X_test)
+            }
+        }
+        
+        import json
+        report_path = output_dir / 'final_report.json'
+        with open(report_path, 'w') as f:
+            json.dump(report, f, indent=2, default=str)
+        
+        logger.info(f"Reporte final guardado: {report_path}")
+        logger.info("¡Pipeline completado exitosamente!")
+        
+    except Exception as e:
+        logger.error(f"Error en pipeline: {str(e)}")
+        raise
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}
+
+\section{Archivo de Configuración}
+
+\subsection{Configuración YAML}
+
+\begin{lstlisting}[language=yaml, caption=Archivo de configuración config.yaml]
+# Configuración del pipeline de analítica de datos
+
+# Configuración de preprocesamiento
+preprocessing:
+  missing_value_strategy: "mean"  # mean, median, mode, drop
+  outlier_detection: true
+  outlier_method: "iqr"  # iqr, zscore, isolation_forest
+  scaling_method: "standard"  # standard, minmax, robust
+  encoding_method: "label"  # label, onehot, target
+
+# Configuración de división de datos
+test_size: 0.2
+validation_size: 0.2
+random_state: 42
+stratify: true
+
+# Configuración de modelos
+models:
+  logistic_regression:
+    enabled: true
+    parameters:
+      C: [0.1, 1, 10]
+      solver: ['liblinear', 'lbfgs']
+      max_iter: 1000
+  
+  random_forest:
+    enabled: true
+    parameters:
+      n_estimators: [100, 200, 500]
+      max_depth: [None, 10, 20]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+  
+  svm:
+    enabled: true
+    parameters:
+      C: [0.1, 1, 10, 100]
+      kernel: ['linear', 'rbf']
+      gamma: ['scale', 'auto']
+  
+  xgboost:
+    enabled: true
+    parameters:
+      n_estimators: [100, 200, 500]
+      max_depth: [3, 6, 9]
+      learning_rate: [0.01, 0.1, 0.2]
+      subsample: [0.8, 0.9, 1.0]
+
+# Configuración de optimización de hiperparámetros
+hyperparameter_optimization:
+  method: "random_search"  # grid_search, random_search, bayesian
+  n_iter: 50  # Para random_search
+  cv_folds: 5
+  scoring: "accuracy"
+  n_jobs: -1
+
+# Configuración de evaluación
+evaluation:
+  metrics: ["accuracy", "precision", "recall", "f1", "roc_auc"]
+  cross_validation: true
+  cv_folds: 5
+  confidence_interval: 0.95
+  
+  # Configuración de visualizaciones
+  plots:
+    confusion_matrix: true
+    roc_curve: true
+    feature_importance: true
+    learning_curves: true
+    model_comparison: true
+
+# Configuración de salida
+output:
+  save_models: true
+  save_preprocessors: true
+  save_results: true
+  generate_report: true
+  plot_format: "png"
+  plot_dpi: 300
+
+# Configuración de logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "experiment.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+\end{lstlisting}
+
+\section{Instrucciones de Uso}
+
+\subsection{Instalación de Dependencias}
+
+\begin{lstlisting}[language=bash, caption=Instalación de dependencias]
+# Crear entorno virtual
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# venv\Scripts\activate  # Windows
+
+# Instalar dependencias
+pip install pandas numpy scikit-learn xgboost matplotlib seaborn
+pip install jupyter notebook plotly
+pip install pyyaml argparse pathlib
+
+# Para desarrollo
+pip install pytest black flake8
+\end{lstlisting}
+
+\subsection{Ejecución del Pipeline}
+
+\begin{lstlisting}[language=bash, caption=Comandos de ejecución]
+# Ejecución básica
+python main.py --data datos.csv --target target_column
+
+# Ejecución con configuración personalizada
+python main.py --data datos.csv --target target_column --config mi_config.yaml
+
+# Ejecución con directorio de salida específico
+python main.py --data datos.csv --target target_column --output resultados/
+
+# Ejecución completa con todos los parámetros
+python main.py \
+  --data path/to/dataset.csv \
+  --target target_variable \
+  --config config/experiment.yaml \
+  --output results/experiment_1/
+\end{lstlisting}
+
+\subsection{Estructura de Archivos}
+
+\begin{lstlisting}[caption=Estructura recomendada del proyecto]
+proyecto/
+├── src/
+│   ├── __init__.py
+│   ├── preprocessing.py
+│   ├── training.py
+│   ├── evaluation.py
+│   └── utils.py
+├── config/
+│   ├── config.yaml
+│   └── experiments/
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── external/
+├── models/
+│   ├── trained/
+│   └── checkpoints/
+├── results/
+│   ├── figures/
+│   ├── reports/
+│   └── experiments/
+├── notebooks/
+│   ├── exploratory/
+│   └── analysis/
+├── tests/
+├── main.py
+├── requirements.txt
+└── README.md
+\end{lstlisting}

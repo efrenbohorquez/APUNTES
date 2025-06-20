@@ -1,0 +1,543 @@
+% ========================================================================
+% CAPÍTULO 4: METODOLOGÍA
+% ========================================================================
+
+\chapter{Metodología}
+
+\section{Introducción}
+
+Este capítulo describe la metodología utilizada para abordar el problema de investigación planteado. Se detalla el diseño experimental, las técnicas de analítica de datos empleadas, los conjuntos de datos utilizados, y los criterios de evaluación establecidos para validar los resultados.
+
+\section{Enfoque Metodológico}
+
+\subsection{Paradigma de Investigación}
+
+Esta investigación sigue un paradigma \textbf{cuantitativo-experimental}, enfocándose en la medición objetiva del rendimiento de diferentes técnicas de analítica de datos aplicadas a [tu problema específico].
+
+\subsection{Tipo de Investigación}
+
+\begin{itemize}
+    \item \textbf{Investigación Aplicada:} Orientada a resolver un problema práctico específico
+    \item \textbf{Investigación Experimental:} Involucra manipulación controlada de variables
+    \item \textbf{Investigación Cuantitativa:} Basada en mediciones numéricas y análisis estadístico
+\end{itemize}
+
+\section{Marco Metodológico General}
+
+\subsection{Metodología CRISP-DM Adaptada}
+
+El desarrollo de esta investigación sigue una adaptación de la metodología CRISP-DM, estructurada en las siguientes fases:
+
+\begin{enumerate}
+    \item \textbf{Comprensión del Problema}
+        \begin{itemize}
+            \item Definición clara del problema de negocio/investigación
+            \item Identificación de objetivos y métricas de éxito
+            \item Análisis de factibilidad técnica
+        \end{itemize}
+    
+    \item \textbf{Comprensión de los Datos}
+        \begin{itemize}
+            \item Exploración inicial de datasets
+            \item Análisis de calidad de datos
+            \item Identificación de patrones preliminares
+        \end{itemize}
+    
+    \item \textbf{Preparación de los Datos}
+        \begin{itemize}
+            \item Limpieza y preprocesamiento
+            \item Transformación y normalización
+            \item Ingeniería de características (Feature Engineering)
+            \item División en conjuntos de entrenamiento/validación/prueba
+        \end{itemize}
+    
+    \item \textbf{Modelado}
+        \begin{itemize}
+            \item Selección de algoritmos y técnicas
+            \item Configuración de hiperparámetros
+            \item Entrenamiento de modelos
+            \item Validación cruzada
+        \end{itemize}
+    
+    \item \textbf{Evaluación}
+        \begin{itemize}
+            \item Aplicación de métricas de rendimiento
+            \item Análisis estadístico de resultados
+            \item Comparación con métodos baseline
+            \item Validación de hipótesis
+        \end{itemize}
+    
+    \item \textbf{Implementación y Despliegue}
+        \begin{itemize}
+            \item Desarrollo de prototipo funcional
+            \item Validación en entorno real (si aplica)
+            \item Documentación de resultados
+        \end{itemize}
+\end{enumerate}
+
+\section{Conjuntos de Datos}
+
+\subsection{Fuentes de Datos}
+
+\subsubsection{Dataset Principal: [Nombre del Dataset]}
+
+\begin{itemize}
+    \item \textbf{Fuente:} [Organización, URL o descripción de origen]
+    \item \textbf{Tamaño:} [Número de instancias] registros, [Número de características] características
+    \item \textbf{Período:} [Rango temporal de los datos]
+    \item \textbf{Tipo de datos:} [Numéricos, categóricos, texto, imágenes, etc.]
+    \item \textbf{Formato:} [CSV, JSON, Base de datos, etc.]
+\end{itemize}
+
+\textbf{Descripción de las variables:}
+
+\begin{table}[htbp]
+\centering
+\caption{Variables del dataset principal}
+\begin{tabular}{@{}p{3cm}p{2.5cm}p{6cm}p{2cm}@{}}
+\toprule
+\textbf{Variable} & \textbf{Tipo} & \textbf{Descripción} & \textbf{Rango} \\
+\midrule
+[Variable 1] & Numérico & [Descripción detallada] & [Min-Max] \\
+[Variable 2] & Categórico & [Descripción detallada] & [Categorías] \\
+[Variable 3] & Texto & [Descripción detallada] & [Longitud] \\
+[Variable objetivo] & [Tipo] & [Descripción detallada] & [Valores] \\
+\bottomrule
+\end{tabular}
+\label{tab:variables_dataset}
+\end{table}
+
+\subsubsection{Datasets Complementarios}
+
+\begin{itemize}
+    \item \textbf{Dataset Secundario 1:} [Descripción y propósito]
+    \item \textbf{Dataset Secundario 2:} [Descripción y propósito]
+    \item \textbf{Datos Externos:} [APIs, fuentes adicionales]
+\end{itemize}
+
+\subsection{Consideraciones Éticas y de Privacidad}
+
+\begin{itemize}
+    \item \textbf{Consentimiento:} [Descripción del consentimiento para uso de datos]
+    \item \textbf{Anonimización:} [Técnicas utilizadas para proteger identidad]
+    \item \textbf{Cumplimiento normativo:} [GDPR, regulaciones locales]
+    \item \textbf{Sensibilidad:} [Manejo de información sensible]
+\end{itemize}
+
+\section{Preprocesamiento de Datos}
+
+\subsection{Análisis Exploratorio de Datos (EDA)}
+
+\subsubsection{Estadística Descriptiva}
+
+\begin{itemize}
+    \item Medidas de tendencia central y dispersión
+    \item Análisis de distribuciones
+    \item Identificación de valores atípicos
+    \item Análisis de correlaciones
+\end{itemize}
+
+\begin{algorithm}[htbp]
+\caption{Análisis Exploratorio de Datos}
+\begin{algorithmic}[1]
+\REQUIRE Dataset $D$ con variables $X = \{x_1, x_2, ..., x_n\}$
+\ENSURE Reporte de estadísticas descriptivas y visualizaciones
+\STATE Calcular estadísticas descriptivas para cada variable
+\STATE Generar histogramas y gráficos de distribución
+\STATE Calcular matriz de correlación
+\STATE Identificar valores faltantes y atípicos
+\STATE Crear visualizaciones de relaciones entre variables
+\STATE Generar reporte de calidad de datos
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Visualización de Datos}
+
+\begin{itemize}
+    \item Histogramas y gráficos de densidad
+    \item Diagramas de caja (boxplots)
+    \item Matrices de correlación
+    \item Gráficos de dispersión
+    \item Mapas de calor para variables categóricas
+\end{itemize}
+
+\subsection{Limpieza de Datos}
+
+\subsubsection{Tratamiento de Valores Faltantes}
+
+\begin{itemize}
+    \item \textbf{Eliminación:} Para variables con >30\% de valores faltantes
+    \item \textbf{Imputación simple:} Media/mediana para variables numéricas
+    \item \textbf{Imputación múltiple:} Para patrones complejos de datos faltantes
+    \item \textbf{Indicadores de missingness:} Variables dummy para valores faltantes
+\end{itemize}
+
+\begin{equation}
+\text{Imputación por media: } \hat{x_i} = \frac{1}{n}\sum_{j=1}^{n} x_j
+\label{eq:imputacion_media}
+\end{equation}
+
+\subsubsection{Detección y Tratamiento de Outliers}
+
+\textbf{Método del Rango Intercuartílico (IQR):}
+\begin{equation}
+\text{Outlier si: } x < Q1 - 1.5 \times IQR \text{ o } x > Q3 + 1.5 \times IQR
+\label{eq:outlier_iqr}
+\end{equation}
+
+\textbf{Método Z-Score:}
+\begin{equation}
+Z = \frac{x - \mu}{\sigma}, \text{ Outlier si } |Z| > 3
+\label{eq:outlier_zscore}
+\end{equation}
+
+\subsection{Transformación de Datos}
+
+\subsubsection{Normalización y Escalamiento}
+
+\begin{itemize}
+    \item \textbf{Min-Max Scaling:} 
+    \begin{equation}
+    x_{norm} = \frac{x - x_{min}}{x_{max} - x_{min}}
+    \label{eq:minmax_scaling}
+    \end{equation}
+    
+    \item \textbf{Z-Score Standardization:}
+    \begin{equation}
+    x_{std} = \frac{x - \mu}{\sigma}
+    \label{eq:zscore_scaling}
+    \end{equation}
+    
+    \item \textbf{Robust Scaling:}
+    \begin{equation}
+    x_{robust} = \frac{x - \text{mediana}}{IQR}
+    \label{eq:robust_scaling}
+    \end{equation}
+\end{itemize}
+
+\subsubsection{Codificación de Variables Categóricas}
+
+\begin{itemize}
+    \item \textbf{One-Hot Encoding:} Para variables nominales
+    \item \textbf{Label Encoding:} Para variables ordinales
+    \item \textbf{Target Encoding:} Para variables categóricas con alta cardinalidad
+    \item \textbf{Binary Encoding:} Para reducir dimensionalidad
+\end{itemize}
+
+\subsection{Ingeniería de Características}
+
+\subsubsection{Creación de Nuevas Variables}
+
+\begin{itemize}
+    \item \textbf{Variables de interacción:} Productos entre características existentes
+    \item \textbf{Agregaciones temporales:} Para datos de series de tiempo
+    \item \textbf{Características de dominio:} Basadas en conocimiento experto
+    \item \textbf{Transformaciones matemáticas:} Log, raíz cuadrada, polinomiales
+\end{itemize}
+
+\subsubsection{Selección de Características}
+
+\begin{itemize}
+    \item \textbf{Métodos de filtro:} Correlación, pruebas chi-cuadrado, información mutua
+    \item \textbf{Métodos wrapper:} Forward/backward selection, búsqueda exhaustiva
+    \item \textbf{Métodos embedded:} LASSO, Random Forest feature importance
+\end{itemize}
+
+\section{Técnicas de Modelado}
+
+\subsection{Algoritmos Seleccionados}
+
+\subsubsection{Métodos Baseline}
+
+\begin{itemize}
+    \item \textbf{Regresión Lineal/Logística:} Modelo simple de referencia
+    \item \textbf{Naive Bayes:} Para problemas de clasificación con independencia
+    \item \textbf{k-NN:} Método no paramétrico simple
+\end{itemize}
+
+\subsubsection{Métodos Avanzados}
+
+\begin{enumerate}
+    \item \textbf{Support Vector Machines (SVM)}
+        \begin{itemize}
+            \item Kernels: lineal, polinomial, RBF
+            \item Optimización de hiperparámetros C y gamma
+            \item Aplicación para clasificación y regresión
+        \end{itemize}
+    
+    \item \textbf{Random Forest}
+        \begin{itemize}
+            \item Número de árboles: 100-1000
+            \item Profundidad máxima: optimización por validación cruzada
+            \item Criterios de división: Gini/Entropy para clasificación
+        \end{itemize}
+    
+    \item \textbf{Gradient Boosting (XGBoost/LightGBM)}
+        \begin{itemize}
+            \item Learning rate: 0.01-0.3
+            \item Número de estimadores: búsqueda por grilla
+            \item Regularización L1 y L2
+        \end{itemize}
+    
+    \item \textbf{Redes Neuronales Profundas}
+        \begin{itemize}
+            \item Arquitecturas: MLP, CNN, RNN/LSTM
+            \item Funciones de activación: ReLU, Sigmoid, Tanh
+            \item Optimizadores: Adam, SGD, RMSprop
+            \item Técnicas de regularización: Dropout, Batch Normalization
+        \end{itemize}
+\end{enumerate}
+
+\subsection{Arquitecturas Específicas}
+
+\subsubsection{[Modelo Propuesto/Principal]}
+
+[Describe aquí la arquitectura específica de tu modelo principal, incluyendo:]
+
+\begin{itemize}
+    \item Diagrama de la arquitectura
+    \item Componentes principales
+    \item Función de pérdida utilizada
+    \item Proceso de entrenamiento
+\end{itemize}
+
+\begin{algorithm}[htbp]
+\caption{Algoritmo Principal Propuesto}
+\begin{algorithmic}[1]
+\REQUIRE Dataset de entrenamiento $D_{train}$, hiperparámetros $\theta$
+\ENSURE Modelo entrenado $M$
+\STATE Inicializar parámetros del modelo
+\FOR{cada época $e$ desde 1 hasta $E$}
+    \FOR{cada lote $B$ en $D_{train}$}
+        \STATE Calcular predicciones $\hat{y} = f(X_B; \theta)$
+        \STATE Calcular pérdida $L = loss(\hat{y}, y_B)$
+        \STATE Calcular gradientes $\nabla_\theta L$
+        \STATE Actualizar parámetros $\theta = \theta - \alpha \nabla_\theta L$
+    \ENDFOR
+    \STATE Evaluar en conjunto de validación
+    \IF{criterio de parada se cumple}
+        \STATE \textbf{break}
+    \ENDIF
+\ENDFOR
+\RETURN Modelo $M$ con parámetros $\theta$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Diseño Experimental}
+
+\subsection{División de Datos}
+
+\begin{itemize}
+    \item \textbf{Entrenamiento:} 70\% de los datos
+    \item \textbf{Validación:} 15\% de los datos (para optimización de hiperparámetros)
+    \item \textbf{Prueba:} 15\% de los datos (para evaluación final)
+\end{itemize}
+
+\textbf{Estrategia de división:}
+\begin{itemize}
+    \item División estratificada para mantener distribución de clases
+    \item División temporal para datos de series de tiempo
+    \item Validación cruzada k-fold (k=5) para robustez
+\end{itemize}
+
+\subsection{Optimización de Hiperparámetros}
+
+\subsubsection{Técnicas de Búsqueda}
+
+\begin{enumerate}
+    \item \textbf{Grid Search:} Búsqueda exhaustiva en grilla predefinida
+    \item \textbf{Random Search:} Búsqueda aleatoria en espacio de parámetros
+    \item \textbf{Bayesian Optimization:} Optimización bayesiana con Gaussian Processes
+    \item \textbf{Evolutionary Algorithms:} Algoritmos genéticos para espacios complejos
+\end{enumerate}
+
+\subsubsection{Espacios de Búsqueda}
+
+\begin{table}[htbp]
+\centering
+\caption{Rangos de hiperparámetros por algoritmo}
+\begin{tabular}{@{}p{3cm}p{4cm}p{6cm}@{}}
+\toprule
+\textbf{Algoritmo} & \textbf{Parámetro} & \textbf{Rango de Búsqueda} \\
+\midrule
+Random Forest & n\_estimators & [50, 100, 200, 500, 1000] \\
+ & max\_depth & [3, 5, 10, 15, None] \\
+ & min\_samples\_split & [2, 5, 10, 20] \\
+\midrule
+XGBoost & learning\_rate & [0.01, 0.05, 0.1, 0.2, 0.3] \\
+ & max\_depth & [3, 4, 5, 6, 7, 8] \\
+ & n\_estimators & [100, 200, 500, 1000] \\
+\midrule
+SVM & C & [0.1, 1, 10, 100, 1000] \\
+ & gamma & [0.001, 0.01, 0.1, 1, auto] \\
+ & kernel & [linear, rbf, poly] \\
+\bottomrule
+\end{tabular}
+\label{tab:hiperparametros}
+\end{table}
+
+\section{Métricas de Evaluación}
+
+\subsection{Métricas Primarias}
+
+Para problemas de \textbf{clasificación}:
+\begin{itemize}
+    \item \textbf{Accuracy:} $Acc = \frac{TP + TN}{TP + TN + FP + FN}$
+    \item \textbf{Precision:} $P = \frac{TP}{TP + FP}$
+    \item \textbf{Recall:} $R = \frac{TP}{TP + FN}$
+    \item \textbf{F1-Score:} $F1 = \frac{2 \times P \times R}{P + R}$
+    \item \textbf{AUC-ROC:} Área bajo la curva ROC
+\end{itemize}
+
+Para problemas de \textbf{regresión}:
+\begin{itemize}
+    \item \textbf{RMSE:} $RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y_i})^2}$
+    \item \textbf{MAE:} $MAE = \frac{1}{n}\sum_{i=1}^{n}|y_i - \hat{y_i}|$
+    \item \textbf{R²:} $R^2 = 1 - \frac{\sum_{i=1}^{n}(y_i - \hat{y_i})^2}{\sum_{i=1}^{n}(y_i - \bar{y})^2}$
+    \item \textbf{MAPE:} $MAPE = \frac{100\%}{n}\sum_{i=1}^{n}\left|\frac{y_i - \hat{y_i}}{y_i}\right|$
+\end{itemize}
+
+\subsection{Métricas Secundarias}
+
+\begin{itemize}
+    \item \textbf{Tiempo de entrenamiento:} Eficiencia computacional
+    \item \textbf{Tiempo de inferencia:} Velocidad de predicción
+    \item \textbf{Memoria utilizada:} Recursos computacionales
+    \item \textbf{Interpretabilidad:} Métricas de explicabilidad (si aplica)
+\end{itemize}
+
+\section{Validación Estadística}
+
+\subsection{Pruebas de Significancia}
+
+\begin{itemize}
+    \item \textbf{Prueba t de Student:} Comparación de medias entre dos modelos
+    \item \textbf{ANOVA:} Comparación múltiple de modelos
+    \item \textbf{Prueba de Wilcoxon:} Para distribuciones no normales
+    \item \textbf{Corrección de Bonferroni:} Para comparaciones múltiples
+\end{itemize}
+
+\subsection{Intervalos de Confianza}
+
+Cálculo de intervalos de confianza del 95\% para las métricas principales:
+\begin{equation}
+IC_{95\%} = \bar{x} \pm t_{n-1,0.025} \times \frac{s}{\sqrt{n}}
+\label{eq:intervalo_confianza}
+\end{equation}
+
+\section{Herramientas y Tecnologías}
+
+\subsection{Entorno de Desarrollo}
+
+\begin{itemize}
+    \item \textbf{Lenguaje principal:} Python 3.8+
+    \item \textbf{IDE:} Jupyter Notebook, PyCharm, VS Code
+    \item \textbf{Control de versiones:} Git/GitHub
+    \item \textbf{Gestión de dependencias:} Conda/pip
+\end{itemize}
+
+\subsection{Librerías y Frameworks}
+
+\begin{table}[htbp]
+\centering
+\caption{Principales librerías utilizadas}
+\begin{tabular}{@{}p{3cm}p{3cm}p{7cm}@{}}
+\toprule
+\textbf{Categoría} & \textbf{Librería} & \textbf{Propósito} \\
+\midrule
+Manipulación de datos & Pandas & Análisis y manipulación de datos \\
+ & NumPy & Operaciones numéricas \\
+\midrule
+Machine Learning & Scikit-learn & Algoritmos tradicionales de ML \\
+ & XGBoost & Gradient boosting \\
+ & LightGBM & Gradient boosting eficiente \\
+\midrule
+Deep Learning & TensorFlow/Keras & Redes neuronales profundas \\
+ & PyTorch & Investigación en deep learning \\
+\midrule
+Visualización & Matplotlib & Gráficos básicos \\
+ & Seaborn & Visualización estadística \\
+ & Plotly & Gráficos interactivos \\
+\midrule
+Estadística & SciPy & Pruebas estadísticas \\
+ & Statsmodels & Modelos estadísticos \\
+\bottomrule
+\end{tabular}
+\label{tab:librerias}
+\end{table}
+
+\subsection{Infraestructura Computacional}
+
+\begin{itemize}
+    \item \textbf{Hardware local:} [Especificaciones del equipo]
+    \item \textbf{Cloud computing:} [AWS/Azure/GCP si aplica]
+    \item \textbf{GPUs:} [Para entrenamiento de deep learning]
+    \item \textbf{Almacenamiento:} [Bases de datos, sistemas de archivos]
+\end{itemize}
+
+\section{Reproducibilidad}
+
+\subsection{Semillas Aleatorias}
+
+Para garantizar reproducibilidad:
+\begin{itemize}
+    \item Fijación de semillas aleatorias en todas las librerías
+    \item Documentación de versiones de software
+    \item Registro de configuraciones de hardware
+\end{itemize}
+
+\subsection{Documentación}
+
+\begin{itemize}
+    \item Código comentado y documentado
+    \item Notebooks con resultados ejecutados
+    \item Scripts de automatización
+    \item Archivos de configuración versionados
+\end{itemize}
+
+\section{Cronograma de Actividades}
+
+\begin{table}[htbp]
+\centering
+\caption{Cronograma de desarrollo metodológico}
+\begin{tabular}{@{}p{4cm}p{2cm}p{2cm}p{2cm}p{2cm}@{}}
+\toprule
+\textbf{Actividad} & \textbf{Mes 1} & \textbf{Mes 2} & \textbf{Mes 3} & \textbf{Mes 4} \\
+\midrule
+Recolección de datos & X & & & \\
+Análisis exploratorio & X & X & & \\
+Preprocesamiento & & X & X & \\
+Modelado baseline & & & X & \\
+Modelado avanzado & & & X & X \\
+Evaluación y validación & & & & X \\
+Documentación & X & X & X & X \\
+\bottomrule
+\end{tabular}
+\label{tab:cronograma}
+\end{table}
+
+\section{Consideraciones Éticas}
+
+\subsection{Privacidad de Datos}
+
+\begin{itemize}
+    \item Anonimización de datos personales
+    \item Cumplimiento de regulaciones de privacidad
+    \item Acceso controlado a datos sensibles
+    \item Eliminación segura de datos temporales
+\end{itemize}
+
+\subsection{Sesgo y Fairness}
+
+\begin{itemize}
+    \item Análisis de sesgo en datos de entrenamiento
+    \item Evaluación de fairness en diferentes grupos demográficos
+    \item Métricas de equidad algorítmica
+    \item Mitigación de discriminación algorítmica
+\end{itemize}
+
+\section{Conclusiones del Capítulo}
+
+Este capítulo ha presentado una metodología comprensiva que combina técnicas tradicionales y modernas de analítica de datos para abordar [el problema específico]. La metodología propuesta está diseñada para ser rigurosa, reproducible y éticamente responsable.
+
+El siguiente capítulo presenta la implementación detallada de esta metodología y los resultados obtenidos en cada fase del proceso.

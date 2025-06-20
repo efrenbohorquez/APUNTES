@@ -1,0 +1,104 @@
+# ===============================================
+# ARCHIVO .GITIGNORE PARA PROYECTO LATEX
+# ===============================================
+
+# Archivos de compilación LaTeX
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.lot
+*.lof
+*.lol
+*.idx
+*.ind
+*.ilg
+*.glo
+*.gls
+*.ist
+*.acn
+*.acr
+*.alg
+*.glg
+*.slg
+*.syg
+*.slo
+*.srs
+*.nav
+*.snm
+*.vrb
+
+# Archivos de backup de editores
+*.bak
+*.backup
+*~
+*.tmp
+*.temp
+
+# Archivos específicos de TeXStudio
+*.txss
+
+# Archivos específicos de VS Code
+.vscode/
+*.code-workspace
+
+# Archivos específicos de sistemas operativos
+# Windows
+Thumbs.db
+Desktop.ini
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Linux
+*~
+.directory
+
+# Archivos de configuración específicos del usuario
+*.user
+*.suo
+*.sln.docstates
+
+# Directorios de salida temporales
+/output/
+/temp/
+/build/
+
+# Archivos de configuración local (mantener plantillas)
+# Descomenta si tienes configuraciones específicas
+# .latexmkrc.local
+# config.local.tex
+
+# Archivos de logs y debug
+*.dvi
+*.ps
+*.eps
+
+# Archivos de índices y glosarios
+*.glsdefs
+*.xdy
+
+# Archivos de Biber
+*.bcf
+*.run.xml
+
+# Archivos de minted (si usas highlighting de código)
+_minted*/
+*.pyg
+
+# Archivos de algoritmos
+*.alg
+*.loa
+
+# Nota: Mantener el PDF final si quieres versionarlo
+# Descomenta la siguiente línea si NO quieres versionar el PDF
+# *.pdf

@@ -1,0 +1,283 @@
+% ========================================================================
+% CAPÍTULO 2: MARCO TEÓRICO
+% ========================================================================
+
+\chapter{Marco Teórico}
+
+\section{Introducción}
+
+Este capítulo presenta los fundamentos teóricos y conceptuales que sustentan la investigación. Se abordan los conceptos clave de analítica de datos, las técnicas y metodologías relevantes, así como los marcos de referencia utilizados en el desarrollo de la tesis.
+
+\section{Analítica de Datos: Conceptos Fundamentales}
+
+\subsection{Definición y Evolución}
+
+La analítica de datos se define como el proceso sistemático de examinar conjuntos de datos para extraer conclusiones útiles, identificar patrones y apoyar la toma de decisiones \citep{referencia_ejemplo}. Este campo ha evolucionado significativamente desde las técnicas estadísticas tradicionales hasta los métodos avanzados de inteligencia artificial.
+
+\begin{definicion}
+\textbf{Analítica de Datos:} Disciplina que combina estadística, informática y conocimiento del dominio para extraer insights significativos de los datos y facilitar la toma de decisiones basada en evidencia.
+\end{definicion}
+
+\subsection{Tipos de Analítica}
+
+La analítica de datos se clasifica tradicionalmente en cuatro categorías:
+
+\begin{enumerate}
+    \item \textbf{Analítica Descriptiva:} Responde a la pregunta ``¿Qué pasó?''
+        \begin{itemize}
+            \item Técnicas: Estadística descriptiva, visualización, reportes
+            \item Objetivo: Resumir y describir características de los datos
+        \end{itemize}
+    
+    \item \textbf{Analítica Diagnóstica:} Responde a la pregunta ``¿Por qué pasó?''
+        \begin{itemize}
+            \item Técnicas: Análisis de correlación, regresión, análisis de causas
+            \item Objetivo: Identificar factores que contribuyen a los resultados
+        \end{itemize}
+    
+    \item \textbf{Analítica Predictiva:} Responde a la pregunta ``¿Qué va a pasar?''
+        \begin{itemize}
+            \item Técnicas: Machine learning, modelos estadísticos, series temporales
+            \item Objetivo: Predecir eventos o comportamientos futuros
+        \end{itemize}
+    
+    \item \textbf{Analítica Prescriptiva:} Responde a la pregunta ``¿Qué se debe hacer?''
+        \begin{itemize}
+            \item Técnicas: Optimización, simulación, algoritmos de decisión
+            \item Objetivo: Recomendar acciones para lograr resultados deseados
+        \end{itemize}
+\end{enumerate}
+
+\section{Fundamentos de Machine Learning}
+
+\subsection{Paradigmas de Aprendizaje}
+
+\subsubsection{Aprendizaje Supervisado}
+
+El aprendizaje supervisado utiliza datos etiquetados para entrenar modelos que puedan predecir outcomes para nuevas observaciones.
+
+\begin{definicion}
+\textbf{Aprendizaje Supervisado:} Paradigma de machine learning donde el algoritmo aprende de ejemplos de entrada-salida para hacer predicciones sobre nuevos datos.
+\end{definicion}
+
+Técnicas principales:
+\begin{itemize}
+    \item \textbf{Clasificación:} Support Vector Machines, Random Forest, Redes Neuronales
+    \item \textbf{Regresión:} Regresión Lineal, Regresión Polinomial, Regresión Logística
+\end{itemize}
+
+\subsubsection{Aprendizaje No Supervisado}
+
+Identifica patrones ocultos en datos sin etiquetas previas.
+
+Técnicas principales:
+\begin{itemize}
+    \item \textbf{Clustering:} K-means, DBSCAN, Clustering Jerárquico
+    \item \textbf{Reducción de Dimensionalidad:} PCA, t-SNE, UMAP
+    \item \textbf{Detección de Anomalías:} Isolation Forest, One-Class SVM
+\end{itemize}
+
+\subsubsection{Aprendizaje por Refuerzo}
+
+El agente aprende a través de interacciones con un entorno, recibiendo recompensas o penalizaciones.
+
+\section{Procesamiento de Big Data}
+
+\subsection{Características del Big Data}
+
+El Big Data se caracteriza por las ``5 V's'':
+
+\begin{itemize}
+    \item \textbf{Volumen:} Grandes cantidades de datos
+    \item \textbf{Velocidad:} Generación rápida de datos
+    \item \textbf{Variedad:} Diferentes tipos y formatos de datos
+    \item \textbf{Veracidad:} Calidad y confiabilidad de los datos
+    \item \textbf{Valor:} Capacidad de generar insights útiles
+\end{itemize}
+
+\subsection{Arquitecturas de Procesamiento}
+
+\subsubsection{Procesamiento por Lotes (Batch)}
+
+\begin{itemize}
+    \item \textbf{Características:} Procesamiento de grandes volúmenes en intervalos
+    \item \textbf{Tecnologías:} Apache Hadoop, Apache Spark
+    \item \textbf{Casos de uso:} ETL, análisis histórico, reportes periódicos
+\end{itemize}
+
+\subsubsection{Procesamiento en Tiempo Real (Streaming)}
+
+\begin{itemize}
+    \item \textbf{Características:} Procesamiento continuo de datos en movimiento
+    \item \textbf{Tecnologías:} Apache Kafka, Apache Storm, Apache Flink
+    \item \textbf{Casos de uso:} Monitoreo en tiempo real, detección de fraudes
+\end{itemize}
+
+\section{Metodologías de Ciencia de Datos}
+
+\subsection{CRISP-DM (Cross-Industry Standard Process for Data Mining)}
+
+CRISP-DM es una metodología estándar que define un proceso estructurado para proyectos de minería de datos:
+
+\begin{enumerate}
+    \item \textbf{Entendimiento del Negocio}
+        \begin{itemize}
+            \item Definición de objetivos empresariales
+            \item Evaluación de la situación
+            \item Definición de objetivos de minería de datos
+        \end{itemize}
+    
+    \item \textbf{Entendimiento de los Datos}
+        \begin{itemize}
+            \item Recolección inicial de datos
+            \item Descripción de los datos
+            \item Exploración de los datos
+            \item Verificación de calidad
+        \end{itemize}
+    
+    \item \textbf{Preparación de los Datos}
+        \begin{itemize}
+            \item Selección de datos
+            \item Limpieza de datos
+            \item Construcción de datos
+            \item Integración de datos
+        \end{itemize}
+    
+    \item \textbf{Modelado}
+        \begin{itemize}
+            \item Selección de técnicas de modelado
+            \item Generación del diseño de pruebas
+            \item Construcción del modelo
+            \item Evaluación del modelo
+        \end{itemize}
+    
+    \item \textbf{Evaluación}
+        \begin{itemize}
+            \item Evaluación de resultados
+            \item Revisión del proceso
+            \item Determinación de próximos pasos
+        \end{itemize}
+    
+    \item \textbf{Despliegue}
+        \begin{itemize}
+            \item Planificación del despliegue
+            \item Planificación de monitoreo y mantenimiento
+            \item Producción del informe final
+        \end{itemize}
+\end{enumerate}
+
+\subsection{KDD (Knowledge Discovery in Databases)}
+
+El proceso KDD incluye las siguientes etapas:
+
+\begin{enumerate}
+    \item Selección de datos
+    \item Preprocesamiento
+    \item Transformación
+    \item Minería de datos
+    \item Interpretación y evaluación
+\end{enumerate}
+
+\section{Técnicas Específicas Relevantes}
+
+\subsection{[Incluir técnicas específicas para tu investigación]}
+
+Por ejemplo, si tu tesis se enfoca en:
+
+\subsubsection{Procesamiento de Lenguaje Natural (NLP)}
+\begin{itemize}
+    \item Tokenización y preprocesamiento de texto
+    \item Modelos de representación: TF-IDF, Word2Vec, BERT
+    \item Análisis de sentimientos
+    \item Extracción de entidades
+\end{itemize}
+
+\subsubsection{Computer Vision}
+\begin{itemize}
+    \item Procesamiento de imágenes
+    \item Redes neuronales convolucionales (CNN)
+    \item Detección y clasificación de objetos
+    \item Segmentación de imágenes
+\end{itemize}
+
+\subsubsection{Series Temporales}
+\begin{itemize}
+    \item Análisis de tendencias y estacionalidad
+    \item Modelos ARIMA
+    \item Redes neuronales recurrentes (RNN, LSTM)
+    \item Forecasting multivariado
+\end{itemize}
+
+\section{Métricas de Evaluación}
+
+\subsection{Métricas para Clasificación}
+
+\begin{itemize}
+    \item \textbf{Exactitud (Accuracy):} $\frac{TP + TN}{TP + TN + FP + FN}$
+    \item \textbf{Precisión (Precision):} $\frac{TP}{TP + FP}$
+    \item \textbf{Recall (Sensibilidad):} $\frac{TP}{TP + FN}$
+    \item \textbf{F1-Score:} $\frac{2 \times Precision \times Recall}{Precision + Recall}$
+    \item \textbf{AUC-ROC:} Área bajo la curva ROC
+\end{itemize}
+
+\subsection{Métricas para Regresión}
+
+\begin{itemize}
+    \item \textbf{Error Cuadrático Medio (MSE):} $\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y_i})^2$
+    \item \textbf{Raíz del Error Cuadrático Medio (RMSE):} $\sqrt{MSE}$
+    \item \textbf{Error Absoluto Medio (MAE):} $\frac{1}{n}\sum_{i=1}^{n}|y_i - \hat{y_i}|$
+    \item \textbf{Coeficiente de Determinación (R²):} $1 - \frac{SS_{res}}{SS_{tot}}$
+\end{itemize}
+
+\section{Herramientas y Tecnologías}
+
+\subsection{Lenguajes de Programación}
+
+\begin{itemize}
+    \item \textbf{Python:} Pandas, NumPy, Scikit-learn, TensorFlow, PyTorch
+    \item \textbf{R:} Tidyverse, Caret, RandomForest
+    \item \textbf{SQL:} Manejo de bases de datos relacionales
+    \item \textbf{Scala:} Para procesamiento distribuido con Spark
+\end{itemize}
+
+\subsection{Plataformas de Big Data}
+
+\begin{itemize}
+    \item \textbf{Apache Hadoop:} Almacenamiento y procesamiento distribuido
+    \item \textbf{Apache Spark:} Motor de análisis unificado
+    \item \textbf{Apache Kafka:} Streaming de datos en tiempo real
+    \item \textbf{Elasticsearch:} Motor de búsqueda y análisis
+\end{itemize}
+
+\subsection{Herramientas de Visualización}
+
+\begin{itemize}
+    \item \textbf{Tableau:} Visualización empresarial
+    \item \textbf{Power BI:} Plataforma de Microsoft
+    \item \textbf{D3.js:} Visualizaciones web interactivas
+    \item \textbf{Matplotlib/Seaborn:} Visualización en Python
+\end{itemize}
+
+\section{Consideraciones Éticas y de Privacidad}
+
+\subsection{Ética en Analítica de Datos}
+
+\begin{itemize}
+    \item Transparencia en algoritmos
+    \item Sesgo algorítmico y fairness
+    \item Consentimiento informado
+    \item Responsabilidad en decisiones automatizadas
+\end{itemize}
+
+\subsection{Privacidad y Protección de Datos}
+
+\begin{itemize}
+    \item Principios de GDPR
+    \item Anonimización y pseudonimización
+    \item Privacidad diferencial
+    \item Seguridad de datos
+\end{itemize}
+
+\section{Conclusiones del Capítulo}
+
+Este capítulo ha establecido las bases teóricas necesarias para comprender [los conceptos específicos relevantes a tu investigación]. Los fundamentos presentados proporcionan el marco conceptual para el desarrollo de [tu propuesta específica] que se detallará en los capítulos siguientes.

@@ -1,0 +1,201 @@
+\documentclass[12pt,letterpaper,oneside]{book}
+
+% ========================================================================
+% CONFIGURACIÓN DE PAQUETES Y DOCUMENTO
+% ========================================================================
+
+% Paquetes esenciales
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% Configuración de página y márgenes
+\usepackage[left=3cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+
+% Paquetes para matemáticas y estadística
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Paquetes para gráficos y figuras
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+
+% Paquetes para tablas y datos
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{tabularx}
+
+% Paquetes para código y listados
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Configuración de colores para código
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Configuración de estilo para código
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+% Paquetes para referencias y bibliografía
+\usepackage[backend=biber,style=apa,natbib=true]{biblatex}
+\addbibresource{bibliografia/referencias.bib}
+
+% Paquetes para hipervínculos
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+% Configuración de encabezados y pies de página
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Configuración de títulos de capítulos
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{0pt}{40pt}
+
+% Configuración para índices
+\usepackage{makeidx}
+\makeindex
+
+% Configuración de teoremas y definiciones
+\theoremstyle{definition}
+\newtheorem{definicion}{Definición}[chapter]
+\newtheorem{teorema}{Teorema}[chapter]
+\newtheorem{proposicion}{Proposición}[chapter]
+\newtheorem{lema}{Lema}[chapter]
+\newtheorem{ejemplo}{Ejemplo}[chapter]
+
+% ========================================================================
+% INFORMACIÓN DE LA TESIS
+% ========================================================================
+
+\title{Título de la Tesis de Maestría en Analítica de Datos}
+\author{Tu Nombre Completo}
+\date{\today}
+
+% ========================================================================
+% INICIO DEL DOCUMENTO
+% ========================================================================
+
+\begin{document}
+
+% Configuración inicial
+\frontmatter
+\pagenumbering{roman}
+
+% Portada
+\input{portada/portada}
+
+% Página de derechos (opcional)
+\input{portada/derechos}
+
+% Dedicatoria
+\input{portada/dedicatoria}
+
+% Agradecimientos
+\input{portada/agradecimientos}
+
+% Resumen en español
+\input{portada/resumen}
+
+% Abstract en inglés
+\input{portada/abstract}
+
+% Índice general
+\tableofcontents
+\newpage
+
+% Índice de figuras
+\listoffigures
+\newpage
+
+% Índice de tablas
+\listoftables
+\newpage
+
+% Lista de algoritmos (si aplica)
+\listofalgorithms
+\newpage
+
+% ========================================================================
+% CONTENIDO PRINCIPAL
+% ========================================================================
+
+\mainmatter
+\pagenumbering{arabic}
+
+% Capítulo 1: Introducción
+\input{capitulos/01_introduccion}
+
+% Capítulo 2: Marco Teórico
+\input{capitulos/02_marco_teorico}
+
+% Capítulo 3: Estado del Arte
+\input{capitulos/03_estado_del_arte}
+
+% Capítulo 4: Metodología
+\input{capitulos/04_metodologia}
+
+% Capítulo 5: Desarrollo/Implementación
+\input{capitulos/05_desarrollo}
+
+% Capítulo 6: Resultados y Análisis
+\input{capitulos/06_resultados}
+
+% Capítulo 7: Conclusiones y Trabajo Futuro
+\input{capitulos/07_conclusiones}
+
+% ========================================================================
+% MATERIAL ADICIONAL
+% ========================================================================
+
+\backmatter
+
+% Bibliografía
+\printbibliography[title=Referencias Bibliográficas]
+
+% Apéndices
+\appendix
+\input{apendices/apendice_a}
+\input{apendices/apendice_b}
+
+% Índice alfabético (opcional)
+\printindex
+
+\end{document}
